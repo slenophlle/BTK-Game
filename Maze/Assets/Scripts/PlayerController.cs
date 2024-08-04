@@ -47,8 +47,8 @@ public class PlayerAndCameraController : MonoBehaviour
     private void FixedUpdate()
     {
         // X ve Z eksenlerinde hareketi ayarla, Y eksenindeki mevcut hız korunur
-        Vector3 velocity = new Vector3(moveDirection.x * movementSpeed, RigidbodyPL.velocity.y, moveDirection.y * movementSpeed);
-        RigidbodyPL.velocity = velocity;
+        Vector3 velocity = new Vector3(moveDirection.x * movementSpeed, RigidbodyPL.linearVelocity.y, moveDirection.y * movementSpeed);
+        RigidbodyPL.linearVelocity = velocity;
     }
 
     void LateUpdate()
