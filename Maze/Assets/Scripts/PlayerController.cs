@@ -1,64 +1,83 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
+using Unity.Cinemachine;
 
-public class PlayerAndCameraController : MonoBehaviour
+[RequireComponent(typeof(CharacterController))]
+public class ThirdPersonController : MonoBehaviour
 {
-    public Rigidbody RigidbodyPL;
-    public InputAction PlayerControllersystem;
-    public float movementSpeed = 12f;
+    [Header("Movement Settings")]
+    public float movementSpeed = 5f;   // Movement speed of the character
+    public float rotationSpeed = 720f; // Rotation speed of the character
 
-    public Transform playerCamera;    // Kamera dönüşü
-    public float cameraFollowSpeed = 10f;  // Kameranın oyuncuyu takip etme hızı
-    public Vector3 cameraOffset;      // Kameranın oyuncudan olan uzaklığı
+    [Header("Camera Settings")]
+    public CinemachineFreeLook freeLookCamera; // Reference to Cinemachine FreeLook camera
 
-    public float mouseSensitivity = 100f; // Mouse hassasiyeti
-    public float verticalLookLimit = 80f; // Y eksenindeki bakış limitini ayarla
+    private CharacterController characterController;
+    private Vector2 inputDirection;
+    private Transform cameraTransform;
 
-    private float xRotation = 0f;
-
-    Vector2 moveDirection = Vector2.zero;
-
-    void OnEnable()
+    private void Awake()
     {
-        PlayerControllersystem.Enable();
+        characterController = GetComponent<CharacterController>();
+        cameraTransform = Camera.main.transform;
     }
 
-    void OnDisable()
+    private void OnEnable()
     {
-        PlayerControllersystem.Disable();
+        // Enable the input actions
+        var playerInput = GetComponent<PlayerInput>();
+        playerInput.actions["Move"].performed += OnMovePerformed;
+        playerInput.actions["Move"].canceled += OnMoveCanceled;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        // Kullanıcıdan hareket yönünü al
-        moveDirection = PlayerControllersystem.ReadValue<Vector2>();
-
-        // Mouse hareketi ile kamera dönüşü
-        float mouseX = Mouse.current.delta.x.ReadValue() * mouseSensitivity * Time.deltaTime;
-        float mouseY = Mouse.current.delta.y.ReadValue() * mouseSensitivity * Time.deltaTime;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -verticalLookLimit, verticalLookLimit);
-
-        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+        // Disable the input actions
+        var playerInput = GetComponent<PlayerInput>();
+        playerInput.actions["Move"].performed -= OnMovePerformed;
+        playerInput.actions["Move"].canceled -= OnMoveCanceled;
     }
 
-    private void FixedUpdate()
+    private void OnMovePerformed(InputAction.CallbackContext context)
     {
-        // X ve Z eksenlerinde hareketi ayarla, Y eksenindeki mevcut hız korunur
-        Vector3 velocity = new Vector3(moveDirection.x * movementSpeed, RigidbodyPL.linearVelocity.y, moveDirection.y * movementSpeed);
-        RigidbodyPL.linearVelocity = velocity;
+        // Read movement input
+        inputDirection = context.ReadValue<Vector2>();
     }
 
-    void LateUpdate()
+    private void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        // Kamerayı oyuncunun etrafında döndür
-        if (playerCamera != null)
+        // Reset movement input when canceled
+        inputDirection = Vector2.zero;
+    }
+
+    private void Update()
+    {
+        MoveCharacter();
+    }
+
+    private void MoveCharacter()
+    {
+        // Convert input direction to camera-relative direction
+        Vector3 moveDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
+        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward.y = 0f; // Keep only horizontal direction
+        Vector3 cameraRight = cameraTransform.right;
+        cameraRight.y = 0f;
+
+        // Calculate movement direction based on camera orientation
+        Vector3 desiredDirection = cameraForward * moveDirection.z + cameraRight * moveDirection.x;
+
+        // Move the character
+        if (moveDirection.magnitude >= 0.1f)
         {
-            Vector3 targetPosition = transform.position + cameraOffset;
-            playerCamera.position = Vector3.Lerp(playerCamera.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
-            playerCamera.LookAt(transform.position); // Kamerayı oyuncunun baktığı yöne döndürür
+            // Smoothly rotate the character to face the desired direction
+            Quaternion targetRotation = Quaternion.LookRotation(desiredDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // Apply movement
+            Vector3 movement = desiredDirection * movementSpeed * Time.deltaTime;
+            characterController.Move(movement);
         }
     }
 }
