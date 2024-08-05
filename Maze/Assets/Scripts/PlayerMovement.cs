@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,13 +9,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Values")]
     public float moveSpeed = 3f;
-    public float rotationSpeed = 10f;
+    public float rotationSpeed = 15f; // Increased rotation speed
     public float mouseSensitivity = 2f; // Sensitivity for mouse look
 
     private Rigidbody rb;
     private bool isAttacking = false;
     private bool isWalking = false;
     private float cameraPitch = 0f; // For vertical camera rotation
+    private float cameraYaw = 0f; // For horizontal camera rotation
 
     private void Awake()
     {
@@ -24,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        HandlePlayerMovement();
         HandleCameraRotation();
     }
 
@@ -34,25 +35,26 @@ public class PlayerMovement : MonoBehaviour
         {
             isAttacking = true;
             animator.SetBool("isAttacking", true); // Set the attack trigger
-            Invoke("DisableAttack", 0.5f); // Reset attack after a delay (adjust based on animation length)
+            StartCoroutine(ResetAttack(0.5f)); // Adjust based on animation length
         }
     }
 
-    private void DisableAttack()
+    private IEnumerator ResetAttack(float delay)
     {
+        yield return new WaitForSeconds(delay);
         isAttacking = false;
         animator.SetBool("isAttacking", false);
     }
 
-    private void HandlePlayerMovement()
+    public void HandlePlayerMovement(Vector2 movementVector)
     {
         // Read input directly for movement
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = movementVector.x;
+        float vertical = movementVector.y;
 
         Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (!isAttacking) // Disable movement while attacking
+        if (!isAttacking) // Allow movement while attacking
         {
             // Calculate camera-relative movement direction
             Vector3 cameraForward = cameraTransform.forward;
@@ -71,12 +73,8 @@ public class PlayerMovement : MonoBehaviour
             // Apply movement
             transform.position += desiredMoveDirection * moveSpeed * Time.deltaTime;
 
-            // Update walking status
-            isWalking = desiredMoveDirection != Vector3.zero;
-            animator.SetBool("isWalking", isWalking); // Set walking animation
-
             // Rotate the player to face the movement direction
-            if (isWalking)
+            if (desiredMoveDirection != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(desiredMoveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -94,8 +92,17 @@ public class PlayerMovement : MonoBehaviour
         cameraPitch -= mouseY;
         cameraPitch = Mathf.Clamp(cameraPitch, -45f, 45f); // Limit vertical look angle
 
+        // Adjust the horizontal rotation
+        cameraYaw += mouseX;
+
         // Rotate the camera based on mouse movement
-        cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX); // Rotate player around Y-axis for horizontal look
+        cameraTransform.eulerAngles = new Vector3(cameraPitch, cameraYaw, 0f);
+        cameraTransform.position = transform.position - cameraTransform.forward * 5f + Vector3.up * 2f; // Adjust the camera distance and height
+    }
+
+    public void SetWalkingStatus(bool walking)
+    {
+        isWalking = walking;
+        animator.SetBool("isWalking", isWalking);
     }
 }

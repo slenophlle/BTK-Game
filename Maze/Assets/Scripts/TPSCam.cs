@@ -1,52 +1,41 @@
+using System;
 using UnityEngine;
 
 public class TPSCam : MonoBehaviour
 {
-    [Header("Target")]
-    public Transform target; // The player or target the camera follows
+    [SerializeField] private Transform followTarget;
+    [SerializeField] private float rotationSpeed = 30f;
+    [SerializeField] private float TopClamp = 70f;
+    [SerializeField] private float BottomClap = -40f;
 
-    [Header("Camera Settings")]
-    public Vector3 offset = new Vector3(0f, 5f, -7f); // Camera offset from the player
-    public float followSpeed = 10f; // Speed at which the camera follows the player
-    public float rotationSpeed = 5f; // Speed at which the camera rotates to face the player
-    public float mouseSensitivity = 2f; // Sensitivity for mouse look
-    public float minYAngle = -45f; // Minimum vertical angle
-    public float maxYAngle = 45f; // Maximum vertical angle
-
-    private float currentYaw = 0f; // Current horizontal angle
-    private float currentPitch = 0f; // Current vertical angle
+    private float cinemachineTargetYaw;
+    private float cinemachineTargetPitch;
 
     private void LateUpdate()
     {
-        // Ensure the target is not null
-        if (target == null)
-        {
-            Debug.LogWarning("TPSCam: Target is not set.");
-            return;
-        }
-
-        HandleCameraRotation();
-
-        // Calculate the desired position and smoothly move the camera to that position
-        Vector3 desiredPosition = target.position + offset;
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
-
-        // Rotate the camera to face the target smoothly
-        Quaternion desiredRotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+        CameraLogic();
     }
-
-    private void HandleCameraRotation()
+    private void CameraLogic()
     {
-        // Read mouse movement for camera rotation
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        float mouseX = GetMouseInput("Mouse X");
+        float mouseY = GetMouseInput("Mouse Y");
 
-        // Adjust the yaw (horizontal rotation) and pitch (vertical rotation)
-        currentYaw += mouseX;
-        currentPitch -= mouseY;
+        cinemachineTargetPitch = UpdateRotation(cinemachineTargetPitch, mouseY,BottomClap, TopClamp, true);
+        cinemachineTargetYaw = UpdateRotation(cinemachineTargetYaw, mouseX, float.MinValue, float.MaxValue, false);
+        ApplyRotations(cinemachineTargetPitch, cinemachineTargetYaw);
 
-        // Clamp the pitch angle
-        currentPitch = Mathf.Clamp(currentPitch, minYAngle, maxYAngle);
+    }
+    private void ApplyRotations(float pitch, float yaw)
+    {
+        followTarget.rotation = Quaternion.Euler(pitch, yaw, followTarget.eulerAngles.z);
+    }
+    private float UpdateRotation(float currentrotation, float input, float min, float max, bool isXAxis)
+    {
+        currentrotation += isXAxis ? -input : input;
+        return Mathf.Clamp(currentrotation, min, max);
+    }
+    private float GetMouseInput(string axis) 
+    {
+        return Input.GetAxis(axis) *rotationSpeed *Time.deltaTime;
     }
 }
