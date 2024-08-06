@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,13 +7,29 @@ public class PlayerController : MonoBehaviour
     private PlayerControllerSystem PLInput;
     public PlayerMovement playerMovement;
 
-    private bool isWalking = false;
-
     private void Awake()
     {
         PLInput = new PlayerControllerSystem();
         PLInput.Player.Enable();
         PLInput.Player.Attack.performed += PlayerAttack;
+        PLInput.Player.Move.performed += MakeMove;
+        PLInput.Player.Move.canceled += StopMove;
+    }
+
+    private void MakeMove(InputAction.CallbackContext context)
+    {
+        Vector2 movementVector = context.ReadValue<Vector2>();
+        playerMovement.HandlePlayerMovement(movementVector);
+
+        // Update walking status based on movement input
+        bool isWalking = movementVector != Vector2.zero;
+        playerMovement.SetWalkingStatus(isWalking);
+    }
+
+    private void StopMove(InputAction.CallbackContext context)
+    {
+        playerMovement.HandlePlayerMovement(Vector2.zero);
+        playerMovement.SetWalkingStatus(false);
     }
 
     private void Update()
@@ -21,7 +38,7 @@ public class PlayerController : MonoBehaviour
         playerMovement.HandlePlayerMovement(movementVector);
 
         // Update walking status based on movement input
-        isWalking = movementVector != Vector2.zero;
+        bool isWalking = movementVector != Vector2.zero;
         playerMovement.SetWalkingStatus(isWalking);
     }
 

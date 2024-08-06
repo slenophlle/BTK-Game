@@ -79,6 +79,14 @@ public class PlayerMovement : MonoBehaviour
                 Quaternion targetRotation = Quaternion.LookRotation(desiredMoveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
+
+            // Update walking animation
+            bool isMoving = desiredMoveDirection != Vector3.zero;
+            if (isWalking != isMoving)
+            {
+                isWalking = isMoving;
+                animator.SetBool("isWalking", isWalking);
+            }
         }
     }
 
@@ -102,7 +110,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetWalkingStatus(bool walking)
     {
-        isWalking = walking;
-        animator.SetBool("isWalking", isWalking);
+        if (isWalking != walking)
+        {
+            isWalking = walking;
+            animator.SetBool("isWalking", walking);
+        }
     }
 }

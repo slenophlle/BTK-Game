@@ -26,7 +26,7 @@ public class CameraObstacleAvoidance : MonoBehaviour
 
         // Check for obstacles using a raycast
         RaycastHit hit;
-        Vector3 direction = desiredPosition - target.position;
+        Vector3 direction = desiredPosition - (target.position + Vector3.up * height);
         if (Physics.Raycast(target.position + Vector3.up * height, direction.normalized, out hit, defaultDistance, obstacleLayers))
         {
             // If an obstacle is detected, move the camera closer to the player
