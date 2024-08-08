@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public List<Transform> objectsToMove; // Hareket ettirilecek objelerin listesi
-    public float moveSpeed = 5f; // Objeleri hareket ettirme hýzý
+    public float rotateSpeed = 45f; // Objeleri döndürme hýzý
     public float lifeTime = 2f; // Obje yaþam süresi
     private Dictionary<Transform, bool> moveStatus = new Dictionary<Transform, bool>();
 
@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
         {
             if (moveStatus[obj])
             {
-                obj.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                // Rotate the object
+                obj.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
             }
         }
     }

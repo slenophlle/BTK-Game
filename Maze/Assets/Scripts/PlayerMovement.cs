@@ -5,28 +5,29 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Components")]
     public Animator animator;
-    public Transform cameraTransform; // Reference to the camera transform
+    public Transform cameraTransform;
 
     [Header("Values")]
     public float moveSpeed = 3f;
-    public float rotationSpeed = 15f; // Increased rotation speed
-    public float mouseSensitivity = 2f; // Sensitivity for mouse look
+    public float rotationSpeed = 0.5f;
+    public float mouseSensitivity = 2f;
 
     private Rigidbody rb;
     private bool isAttacking = false;
     private bool isWalking = false;
-    private float cameraPitch = 0f; // For vertical camera rotation
-    private float cameraYaw = 0f; // For horizontal camera rotation
+    private float cameraPitch = 0f;
+    private float cameraYaw = 0f;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
         HandleCameraRotation();
+        UpdateWalkingAnimation();
     }
 
     public void AttackAnimationHandler()
@@ -34,8 +35,8 @@ public class PlayerMovement : MonoBehaviour
         if (!isAttacking)
         {
             isAttacking = true;
-            animator.SetBool("isAttacking", true); // Set the attack trigger
-            StartCoroutine(ResetAttack(0.5f)); // Adjust based on animation length
+            animator.SetBool("isAttacking", true);
+            StartCoroutine(ResetAttack(0.5f));
         }
     }
 
@@ -48,66 +49,33 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandlePlayerMovement(Vector2 movementVector)
     {
-        // Read input directly for movement
-        float horizontal = movementVector.x;
-        float vertical = movementVector.y;
+        if (isAttacking) return;
 
-        Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 moveDirection = new Vector3(movementVector.x, 0f, movementVector.y).normalized;
+        Vector3 desiredMoveDirection = CalculateDesiredMoveDirection(moveDirection);
 
-        if (!isAttacking) // Allow movement while attacking
-        {
-            // Calculate camera-relative movement direction
-            Vector3 cameraForward = cameraTransform.forward;
-            Vector3 cameraRight = cameraTransform.right;
-
-            cameraForward.y = 0f; // Flatten the forward vector
-            cameraRight.y = 0f; // Flatten the right vector
-
-            // Normalize camera direction vectors
-            cameraForward.Normalize();
-            cameraRight.Normalize();
-
-            // Calculate the desired move direction based on camera orientation
-            Vector3 desiredMoveDirection = cameraForward * moveDirection.z + cameraRight * moveDirection.x;
-
-            // Apply movement
-            transform.position += desiredMoveDirection * moveSpeed * Time.deltaTime;
-
-            // Rotate the player to face the movement direction
-            if (desiredMoveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(desiredMoveDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            }
-
-            // Update walking animation
-            bool isMoving = desiredMoveDirection != Vector3.zero;
-            if (isWalking != isMoving)
-            {
-                isWalking = isMoving;
-                animator.SetBool("isWalking", isWalking);
-            }
-        }
+        MovePlayer(desiredMoveDirection);
+        RotatePlayer(desiredMoveDirection);
     }
 
-    private void HandleCameraRotation()
+    private Vector3 CalculateDesiredMoveDirection(Vector3 moveDirection)
     {
-        // Read mouse movement for camera rotation
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        Vector3 cameraForward = cameraTransform.forward;
+        Vector3 cameraRight = cameraTransform.right;
 
-        // Adjust the vertical rotation and clamp the angle
-        cameraPitch -= mouseY;
-        cameraPitch = Mathf.Clamp(cameraPitch, -45f, 45f); // Limit vertical look angle
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
 
-        // Adjust the horizontal rotation
-        cameraYaw += mouseX;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
 
-        // Rotate the camera based on mouse movement
-        cameraTransform.eulerAngles = new Vector3(cameraPitch, cameraYaw, 0f);
-        cameraTransform.position = transform.position - cameraTransform.forward * 5f + Vector3.up * 2f; // Adjust the camera distance and height
+        return cameraForward * moveDirection.z + cameraRight * moveDirection.x;
     }
 
+    private void MovePlayer(Vector3 direction)
+    {
+        transform.position += direction * moveSpeed * Time.deltaTime;
+    }
     public void SetWalkingStatus(bool walking)
     {
         if (isWalking != walking)
@@ -115,5 +83,37 @@ public class PlayerMovement : MonoBehaviour
             isWalking = walking;
             animator.SetBool("isWalking", walking);
         }
+    }
+    private void RotatePlayer(Vector3 direction)
+    {
+        if (direction == Vector3.zero) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+    }
+
+    private void UpdateWalkingAnimation()
+    {
+        bool isMoving = transform.forward != Vector3.zero;
+        if (isWalking != isMoving)
+        {
+            isWalking = isMoving;
+            animator.SetBool("isWalking", isWalking);
+        }
+    }
+
+    private void HandleCameraRotation()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        cameraPitch = Mathf.Clamp(cameraPitch - mouseY, -45f, 45f);
+        cameraYaw += mouseX;
+
+        cameraTransform.eulerAngles = new Vector3(cameraPitch, cameraYaw, 0f);
+        cameraTransform.position = transform.position - cameraTransform.forward * 5f + Vector3.up * 2f;
+
+        Vector3 forwardDirection = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
+        transform.forward = forwardDirection;
     }
 }
