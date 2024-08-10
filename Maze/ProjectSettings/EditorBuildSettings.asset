@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/UI_Scene.unity
+    guid: fdc6d9be0c4096b45a588e24709f7dd7
+  - enabled: 1
+    path: Assets/Scenes/DungeonMaze.unity
+    guid: 6dbbc23a58ac71844802e1b08a245a0f
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e8d62ee59accfe34aab7b9d44d049ecb, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
