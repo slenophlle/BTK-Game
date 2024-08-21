@@ -2,13 +2,24 @@ using UnityEngine;
 
 public class TriggerListener : MonoBehaviour
 {
-    public GameManager gameManager;
+   // public GameManager gameManager;
+
+    public GameObject objectToMove; // Hareket ettirilecek obje
+    public float moveDistance = 5f; // Hareket mesafesi
+
+    private bool hasMoved = false; // Tek seferlik hareket için
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        Debug.Log("Trigger tetiklendi: " + other.gameObject.name);
+
+        if (!hasMoved)
         {
-            gameManager.OnObjectTriggered(gameObject);
+            if (other.gameObject == objectToMove)
+            {
+                objectToMove.transform.position += new Vector3(moveDistance, 0, 0);
+                hasMoved = true;
+            }
         }
     }
 }
