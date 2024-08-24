@@ -2,23 +2,41 @@ using UnityEngine;
 
 public class TriggerListener : MonoBehaviour
 {
-   // public GameManager gameManager;
+    public GameObject Sewer;
+    private float moveSpeedZ = 3f;
+    private float moveSpeedY = 0.1f;
+    private float stopTime = 1f; // Obje durana kadar geçen süre (saniye)
+    private float rotationSpeed = 30f; // Rotasyon hýzý (derece/saniye)
 
-    public GameObject objectToMove; // Hareket ettirilecek obje
-    public float moveDistance = 5f; // Hareket mesafesi
-
-    private bool hasMoved = false; // Tek seferlik hareket için
+    private bool isValid = false;
+    private float timer = 0f;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger tetiklendi: " + other.gameObject.name);
-
-        if (!hasMoved)
+        if (!isValid && other.CompareTag("Player"))
         {
-            if (other.gameObject == objectToMove)
+            isValid = true;
+        }
+    }
+
+    private void Update()
+    {
+        if (isValid)
+        {
+            timer += Time.deltaTime;
+
+            if (timer < stopTime)
             {
-                objectToMove.transform.position += new Vector3(moveDistance, 0, 0);
-                hasMoved = true;
+                // Sewer objesini -z ve +y yönünde hareket ettir
+                Vector3 movement = new Vector3(0, moveSpeedY * Time.deltaTime, -moveSpeedZ * Time.deltaTime);
+                Sewer.transform.Translate(movement);
+
+                // Sewer objesine y ekseninde rotasyon ekle
+                Sewer.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                isValid = false; // Hareketi durdur
             }
         }
     }

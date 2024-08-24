@@ -5,26 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\assets\\scripts\\triggerlistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\triggerlistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|c:\\users\\fcaka\\onedrive\\belgeler\\github\\btk-game\\maze\\assets\\scripts\\ui_camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui_camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\assets\\scenes\\buttonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scenes\\buttonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{203E294F-6A57-B963-05D6-83EB30201135}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,46 +14,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UI_Camera.cs",
-              "DocumentMoniker": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\UI_Camera.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\UI_Camera.cs",
-              "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\UI_Camera.cs",
-              "RelativeToolTip": "Assets\\Scripts\\UI_Camera.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-10T11:54:06.906Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ButtonManager.cs",
-              "DocumentMoniker": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scenes\\ButtonManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scenes\\ButtonManager.cs",
-              "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scenes\\ButtonManager.cs",
-              "RelativeToolTip": "Assets\\Scenes\\ButtonManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-09T19:06:19.523Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "GameManager.cs",
-              "DocumentMoniker": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\GameManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\GameManager.cs",
-              "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\GameManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\GameManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAA7AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T17:31:12.715Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -82,34 +24,10 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\TriggerListener.cs",
               "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\TriggerListener.cs",
               "RelativeToolTip": "Assets\\Scripts\\TriggerListener.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAABAAAA",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAswBcAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-08T17:31:04.611Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PlayerController.cs",
-              "DocumentMoniker": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
-              "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAA9wB0AAAA0AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-03T17:40:10.858Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PlayerMovement.cs",
-              "DocumentMoniker": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\PlayerMovement.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerMovement.cs",
-              "ToolTip": "C:\\Users\\fcaka\\OneDrive\\Belgeler\\GitHub\\BTK-Game\\Maze\\Assets\\Scripts\\PlayerMovement.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerMovement.cs",
-              "ViewState": "AQIAAEcAAAAAAAAAAAAUwE0AAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-05T12:15:55.589Z"
             }
           ]
         }
